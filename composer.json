@@ -1,0 +1,15 @@
+{
+    "name": "valar_chen/learn_php",
+    "authors": [
+        {
+            "name": "Valar",
+            "email": "valar_chen@mail.chungyo.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+          "Lessoion3\\": "lession3"
+        }
+    },
+    "require": {}
+}
