@@ -8,7 +8,8 @@
     ],
     "autoload": {
         "psr-4": {
-          "Lessoion3\\": "lession3"
+            "Lessoion3\\": "lession3",
+            "Web\\": "web"
         }
     },
     "require": {}

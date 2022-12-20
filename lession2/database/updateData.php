@@ -16,7 +16,7 @@ echo "<br>";
 //解決中文亂碼問題
 $oConn->query("SET NAMES utf8");
 
-$sSQL = "UPDATE student SET student_name='Peter', student_birth='1992-11-11' WHERE student_id=2";
+$sSQL = "UPDATE student SET student_name='Peter', student_birth='1992-11-11' WHERE student_id=1";
 
 if ($oConn->query($sSQL) === TRUE) {
   echo "更新資料成功";

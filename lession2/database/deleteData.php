@@ -16,7 +16,7 @@ echo "<br>";
 
 
 //刪除資料
-$sSQL = "DELETE FROM student WHERE student_id=3";
+$sSQL = "DELETE FROM student WHERE student_id=1";
 
 if ($oConn->query($sSQL) === true) {
   echo "刪除成功";
