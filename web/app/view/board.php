@@ -13,12 +13,19 @@
 </head>
 
 <body>
+    <?php if (!$_sParm["isLogin"]){?>
+    <script>
+    location.href = 'http://127.0.0.1/web/public/index.php?data=user/index/'
+    </script>
+    <?php }else{ ?>
+
     <table class="table">
         <thead>
             <tr>
                 <th>流水號</th>
                 <th>留言</th>
                 <th>欲修改留言</th>
+                <th><button class="btn btn-secondary logout">logout</th>
             </tr>
         </thead>
         <tbody>
@@ -32,10 +39,10 @@
                 </td>
                 <td>
                     <button class="btn btn-primary edit" type="reset">edit</button>
-                    <button class="btn btn-primary delete" type="delete">delete</button>
+                    <button class="btn btn-danger delete" type="delete">delete</button>
                 </td>
             </tr>
-            <?php }?>
+            <?php };?>
         </tbody>
     </table>
 
@@ -43,13 +50,14 @@
         <input type="text" class="form-control" placeholder="New Message" aria-label="New Message"
             aria-describedby="new_msg" id="new_msg">
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary new_msg_btn" type="button" id="new_msg">Submit</button>
+            <button class="btn btn-success new_msg_btn" type="button" id="new_msg">Submit</button>
         </div>
     </div>
+    <?php }; ?>
 </body>
 <script>
 $(".new_msg_btn").click(function() {
-    var useid = 1;
+    var useid = <?php echo $_sParm['userID'] ?>;
     var msg = $(this).parent().siblings("input").val();
     var param = useid + "," + msg;
     var currentRow = $(this).parent().parent().siblings("table").children("tbody");
@@ -96,6 +104,18 @@ $(".delete").click(function() {
         method: "GET",
         success: function(data) {
             currentRow.remove();
+            console.log(data)
+        },
+        error: function(err) {
+            console.log(err)
+        },
+    });
+})
+$(".logout").click(function() {
+    $.ajax({
+        url: "index.php?data=user/logout/",
+        method: "GET",
+        success: function(data) {
             console.log(data)
         },
         error: function(err) {

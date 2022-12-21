@@ -23,7 +23,9 @@ class Mysqlcore
 
     public function __destruct()
     {
-        $this->oConn->close();
+        if (isset($this->oConn)){
+            $this->oConn->close();
+        }
     }
 
     public function connenct()
@@ -51,6 +53,13 @@ class Mysqlcore
         return $this->oResult;
     }
 
+    public function queryWithoutErroCheck($_sSQL)
+    {
+        $this->connenct();
+        $this->oResult = $this->oConn->query($_sSQL);
+        return $this->oResult;
+    }
+
     public function lastId()
     {
         return $this->oConn->insert_id;
@@ -72,6 +81,6 @@ class Mysqlcore
 
     public function getRowCount()
     {
-        return count($this->oResult->fetch_row());
+        return $this->oResult->num_rows;
     }
 }
