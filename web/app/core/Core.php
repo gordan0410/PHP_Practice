@@ -29,7 +29,6 @@ class Core
         $sControllerName = $aData[0];
         $sFunctionName = $aData[1];
         $sParm = $aData[2];
-        
 
         $sPath = 'Web\\App\\Controller\\' . ucfirst(strtolower($sControllerName));
 

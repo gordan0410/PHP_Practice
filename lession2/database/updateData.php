@@ -1,7 +1,7 @@
 <?php
-$sServername   = "mysql";
-$sUsername     = "root";
-$sPassword     = "admin";
+$sServername = "mysql";
+$sUsername = "root";
+$sPassword = "admin";
 $sDatabasename = "myDB";
 
 // 建立連線
@@ -18,9 +18,9 @@ $oConn->query("SET NAMES utf8");
 
 $sSQL = "UPDATE student SET student_name='Peter', student_birth='1992-11-11' WHERE student_id=1";
 
-if ($oConn->query($sSQL) === TRUE) {
-  echo "更新資料成功";
+if ($oConn->query($sSQL) === true) {
+    echo "更新資料成功";
 } else {
-  echo "更新資料失敗: " . $oConn->error;
+    echo "更新資料失敗: " . $oConn->error;
 }
 $oConn->close();

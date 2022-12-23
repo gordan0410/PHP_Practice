@@ -6,10 +6,15 @@ require '../../vendor/autoload.php';
 require_once '../app/config/database.php';
 
 use Web\App\Core\Core;
-use Throwable;
 
 try {
     new Core();
-} catch (\Throwable $_oThrowable) {
-    echo $_oThrowable->getMessage();
+} catch (\Throwable$_oThrowable) {
+    $msg = $_oThrowable->getMessage();
+    $aResult = array(
+        "error" => true,
+        "msg" => $msg,
+    );
+    $json = json_encode($aResult);
+    echo $json;
 }

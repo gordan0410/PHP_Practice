@@ -2,6 +2,7 @@
 
 namespace Web\App\Core;
 
+use Exception;
 use mysqli;
 
 class Mysqlcore
@@ -23,7 +24,7 @@ class Mysqlcore
 
     public function __destruct()
     {
-        if (isset($this->oConn)){
+        if (isset($this->oConn)) {
             $this->oConn->close();
         }
     }
@@ -38,13 +39,27 @@ class Mysqlcore
         $this->oConn = $oConn;
     }
 
-    public function checkError()
+    /**
+     * checkError 檢查sql是否有錯誤
+     *
+     * @param  object $_oResult
+     * @return void
+     */
+    public function checkError($_oResult)
     {
-        if ($this->oResult !== true) {
-            echo $this->oConn->error;
+        if (is_bool($_oResult)) {
+            if ($_oResult !== true) {
+                throw new Exception($this->oConn->error);
+            }
         }
     }
 
+    /**
+     * query 執行sql語法 (sql請勿使用外部輸入值, 避免sql injection)
+     *
+     * @param  string $_sSQL
+     * @return object mysqli_result
+     */
     public function query($_sSQL)
     {
         $this->connenct();
@@ -53,34 +68,66 @@ class Mysqlcore
         return $this->oResult;
     }
 
-    public function queryWithoutErroCheck($_sSQL)
-    {
-        $this->connenct();
-        $this->oResult = $this->oConn->query($_sSQL);
-        return $this->oResult;
-    }
-
     public function lastId()
     {
         return $this->oConn->insert_id;
     }
 
-    public function getSingle()
+    /**
+     * getSingle 取query的返回資料
+     *
+     * @param  object $_oResult mysqli_result 沒帶入則拿最後一筆query的返回資料
+     * @return array 返回資料
+     */
+    public function getSingle($_oResult = null)
     {
+        if (isset($_oResult)) {
+            return $_oResult->fetch_assoc();
+        }
         return $this->oResult->fetch_assoc();
     }
 
-    public function getAll()
+    /**
+     * getAll 取query的返回資料(多筆)
+     *
+     * @param  object $_oResult mysqli_result 沒帶入則拿最後一筆query的返回資料
+     * @return array 返回資料(多筆)
+     */
+    public function getAll($_oResult = null)
     {
         $aResult = [];
+        if (isset($_oResult)) {
+            while ($aRow = $_oResult->fetch_assoc()) {
+                $aResult[] = $aRow;
+            }
+            return $aResult;
+        }
+
         while ($aRow = $this->oResult->fetch_assoc()) {
             $aResult[] = $aRow;
         }
         return $aResult;
     }
 
-    public function getRowCount()
+    /**
+     * getAffectedRow 取得最後一次query受影響的資料筆數
+     *
+     * @return int 筆數
+     */
+    public function getAffectedRow()
     {
-        return $this->oResult->num_rows;
+        return $this->oConn->affected_rows;
     }
+
+    /**
+     * newQueryStmt 建立query statement
+     *
+     * @param  string $_sSQL 欲格式化的sql語法
+     * @return object query statement
+     */
+    public function newQueryStmt($_sSQL)
+    {
+        return new MysqlStmt($this->oConn, $_sSQL);
+    }
+
 }
